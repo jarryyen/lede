@@ -64,26 +64,35 @@ jobs:
           rm -f ./.config*
           touch ./.config
           # 编译R619AC固件:
+          cat >> .config <<EOF
           CONFIG_TARGET_ipq40xx=y
           #CONFIG_TARGET_ipq40xx_DEVICE_p2w_r619ac-128m=y
           CONFIG_TARGET_BOARD="ipq40xx"
-
+          EOF
+          
           # 文件系统镜像等支持:
           # CONFIG_TARGET_ROOTFS_EXT4FS is not set
+          cat >> .config <<EOF
           CONFIG_TARGET_ROOTFS_SQUASHFS=y
           CONFIG_TARGET_SQUASHFS_BLOCK_SIZE=512
           CONFIG_TARGET_UBIFS_FREE_SPACE_FIXUP=y
           CONFIG_TARGET_UBIFS_JOURNAL_SIZE=""
-
+          EOF
+          
           # 固件压缩:
+          cat >> .config <<EOF
           CONFIG_TARGET_IMAGES_GZIP=y
+          EOF
 
           # IPv6支持:
+          cat >> .config <<EOF
           CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
           CONFIG_PACKAGE_ip6tables=y
           CONFIG_PACKAGE_ipv6helper=y
+          EOF
 
           # 常用LuCI插件选择:
+          cat >> .config <<EOF
           CONFIG_LIBCURL_NO_SMB="!"
           CONFIG_PACKAGE_luci-app-autoreboot=y
           CONFIG_PACKAGE_luci-app-cifsd=y
@@ -112,9 +121,12 @@ jobs:
           CONFIG_PACKAGE_luci-app-openclash=y
           CONFIG_PACKAGE_luci-app-passwall=y
           CONFIG_PACKAGE_luci-app-clash=y
+          EOF
           
           # LuCI主题:
+          cat >> .config <<EOF
           CONFIG_PACKAGE_luci-theme-netgear=y
+          EOF
 
           sed -i 's/^[ \t]*//g' ./.config
           make defconfig
